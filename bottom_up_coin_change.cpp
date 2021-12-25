@@ -14,11 +14,11 @@ using namespace std;
 
 int main() {
     // amount
-    int amount = 15;
+    int amount = 28;
     // list of coins
     vector<int> coins = {1, 2, 5, 10};
     // Vector memo to store state info
-    vector<int> memo(amount, 0);
+    vector<int> memo(amount+1, 0); //initialize to 0
     memo.push_back(0);
     for (int i=0; i<=amount; i++)
     {
@@ -26,7 +26,7 @@ int main() {
         {
             if (i + coins[j] <= amount)
             {
-                // state transition from bottom to upper by adding a single item, choose the max value
+                // state transition from bottom to upper by adding a single item, choose the min value
                 if (memo[i + coins[j]] > 0) memo[i + coins[j]] = min(memo[i] + 1, memo[i + coins[j]]);
                 else memo[i + coins[j]] = memo[i] + 1;
             }
