@@ -14,12 +14,12 @@ using namespace std;
 
 int main() {
     // amount
-    int amount = 28;
+    int amount = 15;
     // list of coins
     vector<int> coins = {1, 2, 5, 10};
-    // memo to store: state-i: max_value
-    unordered_map<int, int> memo;
-    memo[0] = 0;
+    // Vector memo to store state info
+    vector<int> memo(amount, 0);
+    memo.push_back(0);
     for (int i=0; i<=amount; i++)
     {
         for (int j=0; j<coins.size(); j++)
