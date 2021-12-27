@@ -19,16 +19,6 @@ int main()
 {
     int c = 5;
     vector <int> w = {1, 2, 3}, v = {8, 15, 25}, memo(c + 1, 0);
-    for (int i = 0; i <= c; i++)
-    {
-        for (int j = 0; j < w.size(); j++)
-        {
-            if (i + w[j] <= c)
-            {
-                if (memo[i + w[j]] > 0) memo[i + w[j]] = max(memo[i] + v[j], memo[i + w[j]]);
-                else memo[i + w[j]] = memo[i] + v[j];
-            }
-        }
-    }
+    for (int i = 0; i <= c; i++) for (int j = 0; j < w.size(); j++) if (i + w[j] <= c) memo[i + w[j]] = max(memo[i] + v[j], memo[i + w[j]]);
     for (int a = 0; a < memo.size(); a++) cout << a << ": " << memo[a] << endl;
 }
