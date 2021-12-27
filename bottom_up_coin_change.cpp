@@ -2,7 +2,6 @@
 Dynamic programming using bottom-up method
 * The coin change problem
 You want to split 18 cents into coins using the min number of coins from coins 1, 2, 5, 10
-
 * State definition:
 state i: the min number of coins to represent amount i
 * State transition:
@@ -12,25 +11,12 @@ state m can transit to state n (m<n) by adding a single coin.
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    // amount
-    int amount = 28;
-    // list of coins
-    vector<int> coins = {1, 2, 5, 10};
-    // Vector memo to store state info
-    vector<int> memo(amount+1, 0); //initialize to 0
-    memo.push_back(0);
-    for (int i=0; i<=amount; i++)
-    {
-        for (int j=0; j<coins.size(); j++)
-        {
-            if (i + coins[j] <= amount)
-            {
-                // state transition from bottom to upper by adding a single item, choose the min value
-                if (memo[i + coins[j]] > 0) memo[i + coins[j]] = min(memo[i] + 1, memo[i + coins[j]]);
-                else memo[i + coins[j]] = memo[i] + 1;
-            }
-        }
-    }
-    cout << memo[amount] << endl;
+int main()
+{
+    int c = 18;
+    vector <int> w = {1, 2, 5, 10}, memo(c + 1, INT_MAX);
+    memo[0] = 0;
+    for (int i = 0; i <= c; i++) 
+    for (int j = 0; j < w.size(); j++) if (i + w[j] <= c) memo[i + w[j]] = min(memo[i] + 1, memo[i + w[j]]);
+    for (int a = 0; a < memo.size(); a++) cout << a << ": " << memo[a] << endl;
 }
