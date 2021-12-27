@@ -15,27 +15,20 @@ state m can transit to state n (m<n) by adding a single item.
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    // knapsack capacity
-    int cap = 5;
-    // list of item weights
-    vector<int> weights = {1, 2, 3};
-    // list of item values
-    vector<int> values = {8, 15, 25};
-    // Vector memo to store state info
-    vector<int> memo(cap+1, 0); //initialize to 0
-    memo.push_back(0);
-    for (int i=0; i<=cap; i++)
+int main()
+{
+    int c = 5;
+    vector <int> w = {1, 2, 3}, v = {8, 15, 25}, memo(c + 1, 0);
+    for (int i = 0; i <= c; i++)
     {
-        for (int j=0; j<weights.size(); j++)
+        for (int j = 0; j < w.size(); j++)
         {
-            if (i + weights[j] <= cap)
+            if (i + w[j] <= c)
             {
-                // state transition from bottom to upper by adding a single item, choose the max value
-                if (memo[i + weights[j]] > 0) memo[i + weights[j]] = max(memo[i] + values[j], memo[i + weights[j]]);
-                else memo[i + weights[j]] = memo[i] + values[j];
+                if (memo[i + w[j]] > 0) memo[i + w[j]] = max(memo[i] + v[j], memo[i + w[j]]);
+                else memo[i + w[j]] = memo[i] + v[j];
             }
         }
     }
-    cout << memo[cap] << endl;
+    for (int a = 0; a < memo.size(); a++) cout << a << ": " << memo[a] << endl;
 }
