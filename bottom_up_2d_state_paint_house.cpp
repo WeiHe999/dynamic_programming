@@ -7,7 +7,7 @@ the consecutive houses cannot have the same color.
 * 2-D State definition:
 state (i, j): the minimal cost for painting i houses and the i-th house was painted with color j.
 * State transition:
-state (m1, n1) can transit to state (m2, n2) by painting a house with a color.
+state (i, j) can transit to state (i+1, k) by painting a house with a color.
 */
 
 #include <bits/stdc++.h>
