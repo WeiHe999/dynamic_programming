@@ -24,15 +24,17 @@ int main()
         memo[1][j] = costs[0][j];
     }
     
-    for (int i = 2; i <= num_houses; i++)
+    for (int i = 1; i < num_houses; i++)
     {
         for(int j=0; j<num_colors; j++)
         {
+            // transit from current state (i, j) to the next state (i+1, k), and update the cost for state (i+1, k)
             for (int k=0; k<num_colors; k++)
             {
-                if (k!=j && memo[i-1][k] + costs[i-1][j] < memo[i][j]) 
+                // paint different color
+                if (k!=j && memo[i][j] + costs[i+1-1][k] < memo[i+1][k]) 
                 {
-                    memo[i][j] = memo[i-1][k] + costs[i-1][j];
+                    memo[i+1][k] = memo[i][j] + costs[i+1-1][k];
                 }
             }
         }
