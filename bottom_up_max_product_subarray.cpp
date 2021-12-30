@@ -15,5 +15,12 @@ using namespace std;
 
 int main()
 {
+    vector<int> arr = {2, 3, -2, 4}, memo;
+    memo.assign(arr.begin(), arr.end());
+    for(int i=1; i<arr.size(); i++)
+    {
+        memo[i] = max(memo[i-1]*arr[i], memo[i]);
+    }
+    cout << *max_element(memo.begin(), memo.end());
     
 }
