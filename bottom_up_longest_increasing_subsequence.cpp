@@ -15,18 +15,17 @@ using namespace std;
 
 int main()
 {
-    vector<int> v = {7, 2, 4, 3, 9, 8};
-    vector <int> memo(v.size() + 1, 1);
-    for (int i = 1; i <= v.size(); i++)
+    vector <int> vec1 = {7, 2, 4, 3, 9, 8}, memo(vec1.size(), 1);
+    for (int i = 0; i < vec1.size(); i++)
     {
-        for (int j = i+1; j <= v.size(); j++)
+        for (int j = i + 1; j < vec1.size(); j++)
         {
-            if (v[j-1] > v[i-1])
+            if (vec1[i] < vec1[j])
             {
                 memo[j] = max(memo[i] + 1, memo[j]);
             }
         }
     }
-    
+
     cout << *max_element(memo.begin(), memo.end()) << endl;
 }
