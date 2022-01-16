@@ -1,12 +1,12 @@
 /*
 problem: dynamic programming for grid travel
-find the number of ways to travel from (0,0) to (N, N) with obstacles (e.g., aybales) in some cells
+find the number of ways to travel from (0,0) to (N, N) with obstacles (e.g., aybales) in some cells with constrian on max number of turns
 
 method: dynamic programming bottom up
 
 input format:
-1
-4 3
+1 # test case
+4 3 # grid 4*4, max number of turns = 3
 ...H
 .H..
 ....
