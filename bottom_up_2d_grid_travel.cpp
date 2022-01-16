@@ -3,7 +3,6 @@ problem: dynamic programming for grid travel
 find the number of ways to travel from (0,0) to (N, N) with obstacles (e.g., aybales) in some cells
 method: dynamic programming bottom up
 input format:
-1 # 1 test case
 4 # 4*4 grid
 ...H
 .H..
