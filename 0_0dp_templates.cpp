@@ -15,11 +15,6 @@ items are put into a vector as below:
 
 int conditional_knapsack(vector<vector<int> > items, int num_items, int num_levels, int weight_capacity)
 {
-    /*
-    items ={ {item_1_level_1_weight, item_1_level_1_value, item_1_level_1_categoty, item_1_level_2_weight, item_1_level_2_value, item_1_level_2_categoty}, 
-    {item_2_level_1_weight, item_2_level_1_value, item_2_level_1_categoty}} 
-    category: 1 is 0/1 knapsack, -1 is unlimited pnapsack
-    */
     vector<vector<int> > memo(num_levels + 1, vector<int>(weight_capacity + 1, -1));
     memo[0][0] = 0;
     // update
