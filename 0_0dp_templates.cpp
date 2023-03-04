@@ -5,7 +5,7 @@
 
 /***************** Generic Knapsack **********************************/
 /*
-his function converts items with limited amount to 0/1 items, form example, item_1 has weight 4, value 5, can
+This function converts items with limited amount to 0/1 items, form example, item_1 has weight 4, value 5, can
 be used 3 times, denoted as {4, 5, 3}, can be converted to 2 0/1 items {{4, 5, 1}, {4*2, 5*2, 2}}
 the output is stored in vector<vector<int> > new_items
 */
