@@ -2,6 +2,18 @@
 ***************** Knapsack Problems **************************************************
 **************************************************************************************/
 
+## main #####
+int main()
+{
+    long long time_limit, weigh_capacity, num_items, weight, value, time1;
+    vector< vector<long long> > items;
+    cin >> time_limit >> weigh_capacity >> num_items;
+    for (long long i = 0; i < num_items; i++)
+    {
+        cin >> value >> time1 >> weight;
+        items.push_back({weight, time1, value, 1});
+    }
+}
 
 /***************** Generic mixed Knapsack **********************************/
 /*
@@ -153,15 +165,18 @@ long long conditional_knapsack(vector<vector<long long> > items, long long num_i
 
 
 /***************** Knapsack with 2-dimentional capacity ********************************/
-
-/***************** Knapsack with 2-dimentional capacity ********************************/
-
+/*
+This function aims to find the max value for a knapsack with 2-dimentional capacity (time_limit and weight_capacity),
+the input: vector<vector<long long> > items contains all the items in the format of below:
+{ {item_1_weight, item_1_time, item_1_value, item_1_category}, {item_2_weight, item_2_time, item_2_value, item_2_category}}
+if item_1_category==1, it is a 0/1 knapsack, if item_1_category==-1, it is an unlimited knapsack.
+*/
 long long knapsackwith_2d_capacity(vector<vector<long long> > items, long long time_limit, long long weight_capacity)
 {
     vector<vector<long long> > memo(time_limit + 1, vector<long long>(weight_capacity + 1, -1));
-    long long items = items.size();
+    long long num_items = items.size();
     memo[0][0] = 0;
-    for (long long i = 1; i <= num_items; i++)
+    for (long long i = 0; i < num_items; i++)
     {
         long long weight = items[i][0], time1 = items[i][1], value = items[i][2], category = items[i][3];
         if (category==1)
@@ -173,8 +188,9 @@ long long knapsackwith_2d_capacity(vector<vector<long long> > items, long long t
                 {
                     if (j + time1 <= time_limit && k + weight <= weight_capacity && memo[j][k] >= 0)
                     {
-                        memo[j + time1][k + weight] = max(memo[j][k] + values, memo[j + time1][k + weight]);
+                        memo[j + time1][k + weight] = max(memo[j][k] + value, memo[j + time1][k + weight]);
                     }
+                }
             }
         }
         else // unlimited knapsack, forward update
@@ -186,10 +202,11 @@ long long knapsackwith_2d_capacity(vector<vector<long long> > items, long long t
                 {
                     if (j + time1 <= time_limit && k + weight <= weight_capacity && memo[j][k ]>= 0)
                     {
-                        memo[j + time1][k + weight] = max(memo[j][k] + values, memo[j + time1][k + weight]);
+                        memo[j + time1][k + weight] = max(memo[j][k] + value, memo[j + time1][k + weight]);
                     }
-            }
-        }        
+                }
+            } 
+        }
         
     }
     long long max_value = -1;
@@ -199,4 +216,3 @@ long long knapsackwith_2d_capacity(vector<vector<long long> > items, long long t
     }
     return max_value;
 }
-
