@@ -3,7 +3,7 @@
 **************************************************************************************/
 
 
-/***************** Generic Knapsack **********************************/
+/***************** Generic mixed Knapsack **********************************/
 /*
 This function converts items with limited amount to 0/1 items, form example, item_1 has weight 4, value 5, can
 be used 3 times, denoted as {4, 5, 3}, can be converted to 2 0/1 items {{4, 5, 1}, {4*2, 5*2, 2}}
@@ -150,3 +150,11 @@ long long conditional_knapsack(vector<vector<long long> > items, long long num_i
     }
     return max_value;
 }
+
+
+/***************** Knapsack with 2-dimentional capacity ********************************/
+
+
+
+
+
