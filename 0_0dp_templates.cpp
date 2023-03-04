@@ -5,7 +5,7 @@
 
 /***************** Conditonal Knapsack **********************************/
 /* each knapsack has capacity of weight_capacity
-each item has n levels, each level can be done at most 1 time (category=0) or unlimited times (category=1)
+each item has n levels, each level can be done at most 1 time (category=1) or unlimited times (category=-1)
 items are put into a vector as below:
     items ={ {item_1_level_1_weight, item_1_level_1_value, item_1_level_1_categoty, 
     item_1_level_2_weight, item_1_level_2_value, item_1_level_2_categoty}, 
