@@ -7,16 +7,16 @@
 /*
 This function converts items with limited amount to 0/1 items, form example, item_1 has weight 4, value 5, can
 be used 3 times, denoted as {4, 5, 3}, can be converted to 2 0/1 items {{4, 5, 1}, {4*2, 5*2, 2}}
-the output is stored in vector<vector<int> > new_items
+the output is stored in vector<vector<long long> > new_items
 */
-vector<vector<int> > new_items = {};
-void convert_knapsack_items(vector<vector<int> > items, vector<vector<int> > new_items)
+
+void convert_knapsack_items(vector<vector<long long> > items, vector<vector<long long> > &new_items)
 {
     new_items = {};
-    for (int i = 0; i < items.size(); i++)
+    for (long long i = 0; i < items.size(); i++)
     {
-        vector<int> cur_item = items[i];
-        int amount = cur_item[2], weight = cur_item[0], value = cur_item[1], power = 0;
+        vector<long long> cur_item = items[i];
+        long long amount = cur_item[2], weight = cur_item[0], value = cur_item[1], power = 0;
         if (amount < 2) 
         {
             new_items.push_back(cur_item);
@@ -24,7 +24,7 @@ void convert_knapsack_items(vector<vector<int> > items, vector<vector<int> > new
         }
         while (amount > 0)
         {
-            int split_amount = pow(2, power);
+            long long split_amount = pow(2, power);
             new_items.push_back({weight * min(split_amount, amount), value * min(split_amount, amount), 1});
             amount -= split_amount;
             power++;
@@ -35,22 +35,23 @@ void convert_knapsack_items(vector<vector<int> > items, vector<vector<int> > new
 
 /* each knapsack has capacity of weight_capacity
 each item has n levels, each level can be done at most 1 time (category=1) or unlimited times (category=-1)
-items are put into a vector as below:
+items are put long longo a vector as below:
 items ={ {item_1_weight, item_1_value, item_1_categoty}, {item_2_weight, item_2_value, item_2_categoty}} 
 category: 1 is 0/1 knapsack, -1 is unlimited knapsack
  */
-int knapsack(vector<vector<int> > items, int num_items, int weight_capacity)
+long long knapsack(vector<vector<long long> > items, long long weight_capacity)
 {
-    vector<int> memo(weight_capacity + 1, -1);
+    long long num_items = items.size();
+    vector<long long> memo(weight_capacity + 1, -1);
     memo[0] = 0;
     // update
-    for (int i = 0; i < num_items; i++)
+    for (long long i = 0; i < num_items; i++)
     {
-        int weight = items[i][0], value = items[i][1], category = items[i][2];
+        long long weight = items[i][0], value = items[i][1], category = items[i][2];
         if (category==1)
         {
             // 0/1 knapsack, backward update
-            for (int k = weight_capacity; k >= 0; k--)
+            for (long long k = weight_capacity; k >= 0; k--)
             {
                 if (memo[k]==-1) continue;
                 if (k + weight <= weight_capacity) 
@@ -62,7 +63,7 @@ int knapsack(vector<vector<int> > items, int num_items, int weight_capacity)
         else
         {
             // unlimited knapsack, forward update
-            for (int k = 0; k <= weight_capacity; k++)
+            for (long long k = 0; k <= weight_capacity; k++)
             {
                 if (memo[k]==-1) continue;
                 if (k + weight <= weight_capacity) 
@@ -71,9 +72,11 @@ int knapsack(vector<vector<int> > items, int num_items, int weight_capacity)
                 }
             }                  
         }
+        // cout << "memo state " << endl;
+        // print(memo);
     }
-    int max_value = -1;
-    for (int k=0; k <= weight_capacity; k++)
+    long long max_value = -1;
+    for (long long k=0; k <= weight_capacity; k++)
     {
         max_value = max(max_value, memo[k]);
     }
@@ -90,22 +93,22 @@ items are put into a vector as below:
     category: 1 is 0/1 knapsack, -1 is unlimited knapsack
  */
 
-int conditional_knapsack(vector<vector<int> > items, int num_items, int num_levels, int weight_capacity)
+long long conditional_knapsack(vector<vector<long long> > items, long long num_items, long long num_levels, long long weight_capacity)
 {
-    vector<vector<int> > memo(num_levels + 1, vector<int>(weight_capacity + 1, -1));
+    vector<vector<long long> > memo(num_levels + 1, vector<long long>(weight_capacity + 1, -1));
     memo[0][0] = 0;
     // update
-    vector<int> vec_max = memo[0];
-    for (int i = 0; i < num_items; i++)
+    vector<long long> vec_max = memo[0];
+    for (long long i = 0; i < num_items; i++)
     {
-        for (int j=0; j< items[i].size(); j+=3)
+        for (long long j=0; j< items[i].size(); j+=3)
         {
-            int level_id = j/3, weight = items[i][j], value = items[i][j+1], category = items[i][j+2];
+            long long level_id = j/3, weight = items[i][j], value = items[i][j+1], category = items[i][j+2];
             //cout << "weight=" << weight << ", value=" << value << ", category=" << category << endl;
             if (category==1)
             {
                 // 0/1 knapsack, backward update
-                for (int k = weight_capacity; k >= 0; k--)
+                for (long long k = weight_capacity; k >= 0; k--)
                 {
                     if (memo[level_id][k]==-1) continue;
                     if (k + weight <= weight_capacity) 
@@ -120,7 +123,7 @@ int conditional_knapsack(vector<vector<int> > items, int num_items, int num_leve
             {
                 // unlimited knapsack, forward update
                 memo[level_id+1] = memo[level_id]; //copy to the next level
-                for (int k = 0; k <= weight_capacity; k++)
+                for (long long k = 0; k <= weight_capacity; k++)
                 {
                     if (memo[level_id+1][k]==-1) continue;
                     if (k + weight <= weight_capacity) 
@@ -134,14 +137,14 @@ int conditional_knapsack(vector<vector<int> > items, int num_items, int num_leve
         }
         // print(vec_max);
         // cout << "***" << endl;
-        // for (int m=0; m<=num_levels; m++) print(memo[m]);
+        // for (long long m=0; m<=num_levels; m++) print(memo[m]);
         // cout << endl;
-        vector<vector<int> > tmp(num_levels + 1, vector<int>(weight_capacity + 1, -1));
+        vector<vector<long long> > tmp(num_levels + 1, vector<long long>(weight_capacity + 1, -1));
         tmp[0] = vec_max;
         memo = tmp;
     }
-    int max_value = -1;
-    for (int k=0; k <= weight_capacity; k++)
+    long long max_value = -1;
+    for (long long k=0; k <= weight_capacity; k++)
     {
         max_value = max(max_value, vec_max[k]);
     }
