@@ -164,9 +164,9 @@ long long conditional_knapsack(vector<vector<long long> > items, long long num_i
 }
 
 
-/***************** Knapsack with 2-dimentional capacity ********************************/
+/***************** Knapsack with 2-dimensional capacity ********************************/
 /*
-This function aims to find the max value for a knapsack with 2-dimentional capacity (time_limit and weight_capacity),
+This function aims to find the max value for a knapsack with 2-dimensional capacity (time_limit and weight_capacity),
 the input: vector<vector<long long> > items contains all the items in the format of below:
 { {item_1_weight, item_1_time, item_1_value, item_1_category}, {item_2_weight, item_2_time, item_2_value, item_2_category}}
 if item_1_category==1, it is a 0/1 knapsack, if item_1_category==-1, it is an unlimited knapsack.
