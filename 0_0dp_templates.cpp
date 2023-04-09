@@ -271,6 +271,51 @@ int main()
     cout << memo[1][n] << "\n";
 }
 
+/*
+problem:
+######## Remove stones from a pile of stones ##############
+dmoij problem: Educational DP Contest AtCoder K - Stones
+
+Input: 
+2 5 # a pile of 5 stones, and a array of 2 numbers
+2 3 # you can remove either 2 or 3 stones
+Output: Second
+Explanation: A remove 2 stones, B remove2 stones, 1 stone left, A cannot remove 2 or 3 stones, A failed
+
+Idea:
+Idea: step-1: define dp[i] as True or False, True means that the player can win.
+Step-2: loops from 0 to 5, dp[0]=false, dp[1]=flase, since the player has to remove at least 2 stones. 
+dp[2]=true, dp[3]=true, for number of stones=4, play-A can remove: 1) 2 stones, or 2) 3 stones, 
+the best option is to remove 3 stones to fail player-B, so dp[4]=true.
+
+time complexity O(N^2), space complexity O(N^2)
+*/
+
+int main()
+{
+    cin.tie(0); cout.tie(0); cin.sync_with_stdio(0);
+    int n, k;
+    cin >> n >> k;
+    // vector of numbers to be chosen
+    vector <int> vec1(n + 1);
+    for (int i = 1; i <= n; i++) cin >> vec1[i];
+    // dp[i][j]: True or False, True means that the current player can win.
+    vector <bool> memo(k + 1);
+    // initialize base case
+    memo[0] = false;
+    // dp transition
+    for (int i = 1; i <= k; i++) // i is the number of stones in the pile
+    {
+        // O(n) options: the current player can choose any number from the vector
+        for (int j = 1; j <= n; j++) 
+        {
+            if (vec1[j] <= i && !memo[i - vec1[j]]) memo[i] = true;
+        }
+    }
+    if (memo[k]) cout << "First\n";
+    else cout << "Second\n";
+}
+
 
 /**************************************************************************************
 ***************** Interval DP **************************************************
