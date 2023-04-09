@@ -223,25 +223,53 @@ long long knapsackwith_2d_capacity(vector<vector<long long> > items, long long t
 **************************************************************************************/
 /*
 problem:
-######## Minimum number of characters to be inserted to  make a string a palindrome ##############
-%%%%%%%%%%%%% row-by-row update from bottom with flipping array to save space $$$$$$$$$$$$$$$
-dmoij problem: IOI '00 P1 - Palindrome
+######## Pick a number from either end one by one ##############
+dmoij problem: A Game
 Input: 
-5
-Ab3bd
-Output: 2
-Explanation: The output palindromic is "dAb3bAd".
+4
+4 6 2 3
+Output: 9
+Explanation: A chooses 3, B chooses 4, A chooses 6, B chooses 2
 
 Idea:
-1, Define state: dp[i][j]: the max length of palindrome in substring from i to j, 
-2, State transition: if str1[i]==str1[j], then dp[i][j] = dp[i+1][j-1], 
-    else dp[i][j] = min(dp[i][j-1]+1, dp[i+1][j]+1), 
-in plain words, if head==tail, dp of cutting head and tail, 
-else, find min from appending char to matching head and inserting char to matching tail,
+Step-1, define dp[i][j] as the max score you can get for the subsequence from index-i to index-j
+Step-2: for a sequence from i to j, you have two choices: 1) choose element-i, 2) choose element j. 
+If you choose element-i, you friend has two choices: 1a) choose element (i+1) or 1b) choose element j, 
+If you choose element-j you friend has two choices: 2a) choose element (j-1) or 2b) choose element i.
+So: dp[i][j] = max (case-1, case-2)
+Case-1 = min(case 1a, case 1b), case-2 = min(case 2a, case 2b) 
+because you friend takes the better one from case 2a and case 2b
 
-time complexity O(N^2), space complexity O(N) by doing row-by-row update from bottom with flipping arrays
+time complexity O(N^2), space complexity O(N^2)
 */
 
+int main()
+{
+    cin.tie(0); cout.tie(0); cin.sync_with_stdio(0);
+    int n;
+    cin >> n;
+    vector <int> vec1(n + 1);
+    // vector of numbers
+    for (int i = 1; i <= n; i++) cin >> vec1[i];
+    // dp[i][j]: the max score that the first player can get from subsequence from i to j
+    vector <vector <int> > memo(n + 1, vector <int>(n + 1));
+    // diagonally initialize
+    for (int i = 1; i <= n; i++) memo[i][i] = vec1[i];
+    // dp transition
+    for (int d = 1; d <= n; d++) // distance between row_id and col_id
+    {
+        // row_id: start_index
+        for (int i = 1; i <= n - d; i++)
+        {
+            int j = i + d; // col_id: end_index
+            // there are only 2 elements
+            if (i + 1 == j) memo[i][j] = max(vec1[i], vec1[j]);
+            // more than 2 elements
+            else memo[i][j] = max(vec1[i] + min(memo[i + 2][j], memo[i + 1][j - 1]), vec1[j] + min(memo[i][j - 2], memo[i + 1][j - 1]));
+        }
+    }
+    cout << memo[1][n] << "\n";
+}
 
 
 /**************************************************************************************
