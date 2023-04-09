@@ -491,6 +491,67 @@ int main()
 ***************** DP on 2D Grid **************************************************
 **************************************************************************************/
 
+/*
+problem:
+######## Move left/right/down on 2D grid ##############
+dmoij problem: DMOPC '14 Contest 4 P3 - Golden Lily
+Input: 
+2 cols 2 rows
+1 3
+4 3
+1 1 (destination-x, destination-y, starting from 0, 0)
+Output: 7
+Explanation: 
+find min-cost path, from (0,0) to (0, 1), to (1, 1), total-cost=1+3+3=7
 
+Idea:
+1, Define two dp states: dpr[i][j]: the min-cost arriving cell[i, j] from left or above
+dpl[i][j]: the min-cost arriving cell[i, j] from right or above
+2, State transition: starting from (1, 1), we can only move from left to right on the first row
+on row-k (k>=2), we can move from left to right, and right to left, to update dpr and dpl
+Update dp matrix in rows
 
+time complexity O(N^3), space complexity O(N^2)
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    cin.tie(0); cout.tie(0); cin.sync_with_stdio(0);
+    int r, c, a, b, tmp;
+    cin >> c >> r;
+    // grid data
+    vector <vector <int> > grid(r + 1, vector <int>(c + 1));
+    for (int i = 1; i <= r; i++) for (int j = 1; j <= c; j++) cin >> grid[i][j];
+    
+    // dp states: dpl[i][j]: the min cost when arriving cell[i,j] from above cell or from right cell
+    //dpr[i][j]: the min cost when arriving cell[i,j] from above cell or from left cell
+    vector <vector <int> > dpl(r + 2, vector <int>(c + 2, 1e9)), dpr(r + 2, vector <int>(c + 2, 1e9));
+    cin >> b >> a;
+    a++;
+    b++;
+    // initialize
+    dpl[1][1] = grid[1][1]; //left
+    dpr[1][1] = grid[1][1]; //right
+    // the first row
+    for (int j = 2; j <= c; j++) dpr[1][j] = dpr[1][j - 1] + grid[1][j];
+    
+    // dp transitions
+    for (int i = 2; i <= r; i++)
+    {
+        // move from left to right to fill dpr: min from left-side and above-left, above-right
+        for (int j = 1; j <= c; j++)
+        {
+            dpr[i][j] = grid[i][j] + min({dpr[i][j-1], dpr[i-1][j], dpl[i-1][j]});
+        }
+        // move from right to left to fill dpl: min from right-side and above-left, above-right
+        for (int j = c; j>=1; j--)
+        {
+            dpl[i][j] = grid[i][j] + min({dpl[i][j+1], dpl[i-1][j], dpr[i-1][j]});
+        }
+    }
+    cout << min(dpl[a][b], dpr[a][b]) << "\n";
+}
 
