@@ -243,18 +243,19 @@ int main()
     string str1;
     cin >> str1;
     int n = str1.size();
+    //dp[i][j]: the max length of palindrome in substring from i to j, 
     vector <vector <int> > memo(n + 1, vector <int>(n + 1));
     // diagonally initialize
     for (int x = 1; x <= n; x++)
     {
         memo[x][x] = 1;
     }
-    // dp transition
-    for (int d = 1; d <= n; d++)
+    // dp transition by diagonally update
+    for (int d = 1; d <= n; d++) // distance between row_id and col_id
     {
         for (int start = 1; start <= n; start++)
         {
-            int i = start, j = start + d;
+            int i = start, j = start + d; // i is row, j is col
             if (i>n || j>n) continue;
             // case-1: head==tail
             if (str1[i - 1] == str1[j - 1]) 
@@ -266,6 +267,63 @@ int main()
         }
     }
     cout << memo[1][n] << "\n";
+}
+
+/*
+problem:
+######## Minimum number of characters to be inserted to  make a string a palindrome ##############
+%%%%%%%%%%%%% diagonally update with flipping array to save space $$$$$$$$$$$$$$$
+dmoij problem: IOI '00 P1 - Palindrome
+Input: 
+5
+Ab3bd
+Output: 2
+Explanation: The output palindromic is "dAb3bAd".
+
+Idea:
+1, Define state: dp[i][j]: the max length of palindrome in substring from i to j, 
+2, State transition: if str1[i]==str1[j], then dp[i][j] = dp[i+1][j-1], 
+    else dp[i][j] = min(dp[i][j-1]+1, dp[i+1][j]+1), 
+in plain words, if head==tail, dp of cutting head and tail, 
+else, find min from appending char to matching head and inserting char to matching tail,
+
+time complexity O(N^2), space complexity O(N) by doing row-by-row update from bottom with flipping arrays
+*/
+int main()
+{
+    cin.tie(0); cout.tie(0); cin.sync_with_stdio(0);
+    int n, pre = 0, cur = 1;
+    string str1;
+    cin >> n >> str1;
+    // memo[i][j]: the min number of chars to be inserted for substring from i to j
+    // inital_value is the value to be put in memo[k][k] diagonally
+    int inital_value = 0;
+    vector <vector <int> > memo(2, vector <int>(n + 1, inital_value));
+
+    // dp transition from last row to the first row
+    for (int i = n-1; i >=1; i--) // from last row to the fist row
+    {
+        for (int j = i+1; j<=n; j++) // col
+        {
+            // case-1: if head==tail
+            if (str1[i - 1] == str1[j - 1]) 
+            {
+                //memo[i][j] = memo[i+1][j-1]; // replacing i with cur, and i+1 with pre
+                memo[cur][j] = memo[pre][j - 1];
+            }
+            // case-2: head != tail
+            else 
+            {
+                //memo[i][j] = min(memo[i+1][j] + 1, memo[i][j-1] + 1);
+                memo[cur][j] = min(memo[pre][j] + 1, memo[cur][j-1] + 1);
+            }
+        }
+    // flip arrays after a row is completed
+    swap(pre, cur);
+
+    }
+    // output the pre row, since it has been swapped
+    cout << memo[pre][n] << "\n";
 }
 
 
