@@ -272,7 +272,7 @@ int main()
 /*
 problem:
 ######## Minimum number of characters to be inserted to  make a string a palindrome ##############
-%%%%%%%%%%%%% diagonally update with flipping array to save space $$$$$$$$$$$$$$$
+%%%%%%%%%%%%% row-by-row update from bottom with flipping array to save space $$$$$$$$$$$$$$$
 dmoij problem: IOI '00 P1 - Palindrome
 Input: 
 5
