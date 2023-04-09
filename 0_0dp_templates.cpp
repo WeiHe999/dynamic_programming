@@ -219,6 +219,32 @@ long long knapsackwith_2d_capacity(vector<vector<long long> > items, long long t
 
 
 /**************************************************************************************
+***************** Game theory DP **************************************************
+**************************************************************************************/
+/*
+problem:
+######## Minimum number of characters to be inserted to  make a string a palindrome ##############
+%%%%%%%%%%%%% row-by-row update from bottom with flipping array to save space $$$$$$$$$$$$$$$
+dmoij problem: IOI '00 P1 - Palindrome
+Input: 
+5
+Ab3bd
+Output: 2
+Explanation: The output palindromic is "dAb3bAd".
+
+Idea:
+1, Define state: dp[i][j]: the max length of palindrome in substring from i to j, 
+2, State transition: if str1[i]==str1[j], then dp[i][j] = dp[i+1][j-1], 
+    else dp[i][j] = min(dp[i][j-1]+1, dp[i+1][j]+1), 
+in plain words, if head==tail, dp of cutting head and tail, 
+else, find min from appending char to matching head and inserting char to matching tail,
+
+time complexity O(N^2), space complexity O(N) by doing row-by-row update from bottom with flipping arrays
+*/
+
+
+
+/**************************************************************************************
 ***************** Interval DP **************************************************
 **************************************************************************************/
 /*
