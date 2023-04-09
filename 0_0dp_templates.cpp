@@ -328,4 +328,66 @@ int main()
 
 
 
+/*
+problem:
+######## O(N) DP transition ##############
+dmoij problem: Educational DP Contest AtCoder N - Slimes
+Input: 
+4
+10 20 30 40
+Output: 190
+Explanation: 
+(10, 20, 30, 40) → (30, 30, 40): cost = 0 + (10+20)
+(30, 30, 40) → (60, 40): cost = 30 + (30+30)=90
+(60, 40) → (100): cost = 90 + (40+40) = 190
+
+Idea:
+1, Define state: dp[i][j]: the min-cost to combine the sub-array from index-i to index-j
+2, State transition: if we set the segment-point at i, we have dp[i][j] = v1[i] + dp[i+1][j] + sum[i+1, j], 
+if we set the segment-point at i+1, we have dp[i][j] = dp[i][i+1] + sum[i, i+1] + dp[i+2][j] + sum[i+2, j], …
+there are (j-1) cases, dp[i][j] = min(case-1, … case (j-i))
+Update dp matrix diagonally
+
+time complexity O(N^3), space complexity O(N^2)
+*/
+
+int main()
+{
+    cin.tie(0); cout.tie(0); cin.sync_with_stdio(0);
+    long long n;
+    cin >> n;
+    // psa
+    vector <long long> vec1(n + 1), psa = {0};
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> vec1[i];
+        psa.emplace_back(psa.back() + vec1[i]);
+    }
+    // define dp state: the min-cost to combine the sub-array from index-i to index-j
+    vector <vector <long long> > memo(n + 1, vector <long long>(n + 1, 1e18));
+    
+    // diagonally initialize
+    for (int i = 1; i <= n; i++)
+    {
+        memo[i][i] = 0;
+    }
+    // dp transition
+    for (int d = 1; d <= n -1; d++) // distance between row_id and col_id
+    {
+        for (int i = 1; i <= n - d; i++) // row_id: start_point
+        {
+            int j = i + d; // col_id: end_point
+            // O(n) transition
+            for (int t = i; t < j; t++)
+            {
+                // t is the segment-point, left=memo[i][t], right = memo[t + 1][j]
+                memo[i][j] = min(memo[i][t] + memo[t + 1][j] + psa[j] - psa[i - 1], memo[i][j]);
+            }
+        }
+    }
+    cout << memo[1][n] << "\n";
+}
+
+
+
 
