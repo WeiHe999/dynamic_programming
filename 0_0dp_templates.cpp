@@ -1,5 +1,5 @@
 /**************************************************************************************
-***************** Knapsack Problems **************************************************
+***************** Knapsack DP **************************************************
 **************************************************************************************/
 
 ## main #####
@@ -216,3 +216,58 @@ long long knapsackwith_2d_capacity(vector<vector<long long> > items, long long t
     }
     return max_value;
 }
+
+
+/**************************************************************************************
+***************** Interval DP **************************************************
+**************************************************************************************/
+/*
+problem:
+######## Longest Palindromic Subsequence using diagonal update ##############
+Input: s = "bbbab"
+Output: 4
+Explanation: One possible longest palindromic subsequence is "bbbb".
+
+Idea:
+1, Define state: dp[i][j]: the max length of palindrome in substring from i to j, 
+2, State transition: if str1[i]==str1[j], then dp[i][j] = dp[i+1][j-1] + 2, 
+    else dp[i][j] = max(dp[i+1][j], dp[i][j-1]), 
+in plain words, if head==tail, dp of cutting head and tail + 1, 
+else, find max from cutting head and cutting tail,
+
+time complexity O(N^2), space complexity O(N^2)
+*/
+int main()
+{
+    cin.tie(0); cout.tie(0); cin.sync_with_stdio(0);
+    string str1;
+    cin >> str1;
+    int n = str1.size();
+    vector <vector <int> > memo(n + 1, vector <int>(n + 1));
+    // diagonally initialize
+    for (int x = 1; x <= n; x++)
+    {
+        memo[x][x] = 1;
+    }
+    // dp transition
+    for (int d = 1; d <= n; d++)
+    {
+        for (int start = 1; start <= n; start++)
+        {
+            int i = start, j = start + d;
+            if (i>n || j>n) continue;
+            // case-1: head==tail
+            if (str1[i - 1] == str1[j - 1]) 
+            {
+                memo[i][j] = memo[i+1][j - 1] + 2;
+            }
+            // case-2: head != tail
+            else memo[i][j] = max(memo[i + 1][j], memo[i][j-1]);
+        }
+    }
+    cout << memo[1][n] << "\n";
+}
+
+
+
+
